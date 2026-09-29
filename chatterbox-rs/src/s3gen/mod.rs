@@ -1,3 +1,5 @@
+pub mod utils;
+
 use candle_core::{Result as CandleResult, Tensor};
 use candle_nn::VarBuilder;
 

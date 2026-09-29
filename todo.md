@@ -8,7 +8,7 @@ Check against the python file for parity, then mark that file for the next agent
 ## Files:
 
 - [x] `example_for_mac.py`
-- [ ] `example_tts.py`
+- [x] `example_tts.py`
 - [ ] `example_tts_turbo.py`
 - [ ] `example_vc.py`
 - [ ] `gradio_tts_app.py`
@@ -40,8 +40,8 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `src/chatterbox/models/s3gen/transformer/subsampling.py`
 - [ ] `src/chatterbox/models/s3gen/transformer/upsample_encoder.py`
 - [ ] `src/chatterbox/models/s3gen/utils/class_utils.py`
-- [ ] `src/chatterbox/models/s3gen/utils/intmeanflow.py`
-- [ ] `src/chatterbox/models/s3gen/utils/mask.py`
+- [x] `src/chatterbox/models/s3gen/utils/intmeanflow.py`
+- [x] `src/chatterbox/models/s3gen/utils/mask.py`
 - [ ] `src/chatterbox/models/s3gen/utils/mel.py`
 - [ ] `src/chatterbox/models/s3gen/xvector.py`
 - [ ] `src/chatterbox/models/s3tokenizer/__init__.py`
