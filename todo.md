@@ -7,7 +7,7 @@ Check against the python file for parity, then mark that file for the next agent
 
 ## Files:
 
-- [ ] `example_for_mac.py`
+- [x] `example_for_mac.py`
 - [ ] `example_tts.py`
 - [ ] `example_tts_turbo.py`
 - [ ] `example_vc.py`
