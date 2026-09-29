@@ -51,6 +51,34 @@ impl EnTokenizer {
         let txt = txt.replace(SPACE, " ");
         Ok(txt)
     }
+
+    pub fn new(path: &str) -> anyhow::Result<Self> {
+        Self::from_file(path)
+    }
+
+    pub fn mock() -> Self {
+        use tokenizers::models::wordpiece::WordPiece;
+        let mut model_builder = WordPiece::builder();
+        model_builder = model_builder.vocab(
+            vec![
+                (String::from(UNK), 0),
+                (String::from(SOT), 1),
+                (String::from(EOT), 2),
+                (String::from(SPACE), 3),
+            ]
+            .into_iter()
+            .collect(),
+        );
+        let model = model_builder.build().unwrap();
+        let mut tokenizer = HfTokenizer::new(model);
+        let _ = tokenizer.add_special_tokens(&[
+            tokenizers::AddedToken::from(UNK, true),
+            tokenizers::AddedToken::from(SOT, true),
+            tokenizers::AddedToken::from(EOT, true),
+            tokenizers::AddedToken::from(SPACE, true),
+        ]);
+        Self { tokenizer }
+    }
 }
 
 pub fn punc_norm(text: &str) -> String {
