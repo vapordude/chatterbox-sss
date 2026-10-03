@@ -33,9 +33,9 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `src/chatterbox/models/s3gen/transformer/__init__.py`
 - [x] `src/chatterbox/models/s3gen/transformer/activation.py`
 - [x] `src/chatterbox/models/s3gen/transformer/attention.py`
-- [ ] `src/chatterbox/models/s3gen/transformer/convolution.py`
-- [ ] `src/chatterbox/models/s3gen/transformer/embedding.py`
-- [ ] `src/chatterbox/models/s3gen/transformer/encoder_layer.py`
+- [x] `src/chatterbox/models/s3gen/transformer/convolution.py`
+- [x] `src/chatterbox/models/s3gen/transformer/embedding.py`
+- [x] `src/chatterbox/models/s3gen/transformer/encoder_layer.py`
 - [ ] `src/chatterbox/models/s3gen/transformer/positionwise_feed_forward.py`
 - [ ] `src/chatterbox/models/s3gen/transformer/subsampling.py`
 - [ ] `src/chatterbox/models/s3gen/transformer/upsample_encoder.py`
