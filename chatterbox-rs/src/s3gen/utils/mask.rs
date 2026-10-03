@@ -100,7 +100,8 @@ pub fn add_optional_chunk_mask(
     } else if static_chunk_size > 0 {
         let num_left_chunks = num_decoding_left_chunks;
         let max_len = xs.dims()[1];
-        let chunk_masks = subsequent_chunk_mask(max_len, static_chunk_size as usize, num_left_chunks, device)?;
+        let chunk_masks =
+            subsequent_chunk_mask(max_len, static_chunk_size as usize, num_left_chunks, device)?;
         let chunk_masks_u = chunk_masks.unsqueeze(0)?;
 
         let b = masks.dims()[0];
@@ -133,7 +134,9 @@ pub fn make_pad_mask(lengths: &Tensor, mut max_len: usize, device: &Device) -> R
 
     let seq_range = Tensor::arange(0i64, max_len as i64, device)?;
     // seq_range_expand: (B, max_len)
-    let seq_range_expand = seq_range.unsqueeze(0)?.broadcast_as((batch_size, max_len))?;
+    let seq_range_expand = seq_range
+        .unsqueeze(0)?
+        .broadcast_as((batch_size, max_len))?;
 
     // seq_length_expand: (B, 1) broadcasted to (B, max_len)
     let seq_length_expand = lengths.unsqueeze(1)?.broadcast_as((batch_size, max_len))?;
