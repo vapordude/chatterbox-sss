@@ -45,7 +45,7 @@ Check against the python file for parity, then mark that file for the next agent
 - [x] `src/chatterbox/models/s3gen/utils/mel.py`
 - [x] `src/chatterbox/models/s3gen/xvector.py`
 - [ ] `src/chatterbox/models/s3tokenizer/__init__.py`
-- [ ] `src/chatterbox/models/s3tokenizer/s3tokenizer.py`
+- [x] `src/chatterbox/models/s3tokenizer/s3tokenizer.py`
 - [ ] `src/chatterbox/models/t3/__init__.py`
 - [ ] `src/chatterbox/models/t3/inference/t3_hf_backend.py`
 - [ ] `src/chatterbox/models/t3/llama_configs.py`
