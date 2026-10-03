@@ -1,3 +1,5 @@
+pub mod decoder;
+pub mod matcha;
 pub mod utils;
 pub mod xvector;
 pub mod f0_predictor;

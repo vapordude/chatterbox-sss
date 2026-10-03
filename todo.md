@@ -20,7 +20,7 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `src/chatterbox/models/s3gen/__init__.py`
 - [ ] `src/chatterbox/models/s3gen/configs.py`
 - [ ] `src/chatterbox/models/s3gen/const.py`
-- [ ] `src/chatterbox/models/s3gen/decoder.py`
+- [x] `src/chatterbox/models/s3gen/decoder.py`
 - [x] `src/chatterbox/models/s3gen/f0_predictor.py`
 - [x] `src/chatterbox/models/s3gen/flow.py`
 - [x] `src/chatterbox/models/s3gen/flow_matching.py`
