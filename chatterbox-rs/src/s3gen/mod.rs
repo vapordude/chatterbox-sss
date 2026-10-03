@@ -29,3 +29,4 @@ impl S3Gen {
     }
 }
 pub mod transformer;
+pub mod hifigan;
