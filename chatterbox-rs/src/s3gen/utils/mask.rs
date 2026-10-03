@@ -96,7 +96,7 @@ pub fn add_optional_chunk_mask(
         // Element-wise minimum works as logical AND for u8 0/1 tensors
         let out_mask = m_b.minimum(&c_b)?;
 
-        return Ok(out_mask);
+        Ok(out_mask)
     } else if static_chunk_size > 0 {
         let num_left_chunks = num_decoding_left_chunks;
         let max_len = xs.dims()[1];
@@ -110,9 +110,9 @@ pub fn add_optional_chunk_mask(
         let c_b = chunk_masks_u.broadcast_as((b, l, l))?;
 
         let out_mask = m_b.minimum(&c_b)?;
-        return Ok(out_mask);
+        Ok(out_mask)
     } else {
-        return Ok(masks.clone());
+        Ok(masks.clone())
     }
 }
 

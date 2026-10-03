@@ -186,7 +186,7 @@ pub struct NonlinearSequential {
 impl NonlinearSequential {
     pub fn load(vb: VarBuilder, config_str: &str, channels: usize) -> Result<Self> {
         let mut layers = Vec::new();
-        for (_i, name) in config_str.split('-').enumerate() {
+        for name in config_str.split('-') {
             layers.push(Nonlinear::load(vb.pp(name), name, channels)?);
         }
         Ok(Self { layers })
@@ -229,6 +229,7 @@ pub struct TDNNLayer {
     nonlinear: NonlinearSequential,
 }
 
+    #[allow(clippy::too_many_arguments)]
 impl TDNNLayer {
     pub fn load(
         vb: VarBuilder,
@@ -275,6 +276,7 @@ pub struct CAMLayer {
     // relu: ReLU - applied via Candle tensor ops
 }
 
+    #[allow(clippy::too_many_arguments)]
 impl CAMLayer {
     pub fn load(
         vb: VarBuilder,
@@ -369,6 +371,7 @@ pub struct CAMDenseTDNNLayer {
     cam_layer: CAMLayer,
 }
 
+    #[allow(clippy::too_many_arguments)]
 impl CAMDenseTDNNLayer {
     pub fn load(
         vb: VarBuilder,
@@ -429,6 +432,7 @@ pub struct CAMDenseTDNNBlock {
     layers: Vec<CAMDenseTDNNLayer>,
 }
 
+    #[allow(clippy::too_many_arguments)]
 impl CAMDenseTDNNBlock {
     pub fn load(
         vb: VarBuilder,

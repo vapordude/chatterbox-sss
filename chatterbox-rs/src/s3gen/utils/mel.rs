@@ -102,6 +102,7 @@ fn mel_frequencies(
     mel_to_hz(&Tensor::new(mels, device)?, htk)
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn mel(
     sr: f64,
     n_fft: usize,
@@ -146,8 +147,8 @@ pub fn mel(
     if norm {
         for i in 0..n_mels {
             let enorm = 2.0 / (mel_f[i + 2] - mel_f[i]);
-            for j in 0..=n_fft / 2 {
-                weights[i][j] *= enorm as f32;
+            for item in weights[i].iter_mut().take(n_fft / 2 + 1) {
+                *item *= enorm as f32;
             }
         }
     }
