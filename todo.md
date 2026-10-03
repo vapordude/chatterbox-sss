@@ -57,10 +57,10 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `src/chatterbox/models/tokenizers/__init__.py`
 - [ ] `src/chatterbox/models/tokenizers/tokenizer.py`
 - [ ] `src/chatterbox/models/utils.py`
-- [ ] `src/chatterbox/models/voice_encoder/__init__.py`
-- [ ] `src/chatterbox/models/voice_encoder/config.py`
-- [ ] `src/chatterbox/models/voice_encoder/melspec.py`
-- [ ] `src/chatterbox/models/voice_encoder/voice_encoder.py`
+- [x] `src/chatterbox/models/voice_encoder/__init__.py`
+- [x] `src/chatterbox/models/voice_encoder/config.py`
+- [x] `src/chatterbox/models/voice_encoder/melspec.py`
+- [x] `src/chatterbox/models/voice_encoder/voice_encoder.py`
 - [ ] `src/chatterbox/mtl_tts.py`
 - [ ] `src/chatterbox/tts.py`
 - [ ] `src/chatterbox/tts_turbo.py`
