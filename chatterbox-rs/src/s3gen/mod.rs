@@ -22,3 +22,7 @@ impl S3Gen {
         Tensor::randn(0.0f32, 1.0f32, (batch_size, 1, seq_len * 1000), device)
     }
 }
+
+pub mod xvector;
+
+pub mod f0_predictor;
