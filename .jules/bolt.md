@@ -1,0 +1,3 @@
+## 2023-10-24 - RwLock contention in hot paths
+**Learning:** In Rust (and Candle), using `RwLock::write()` unconditionally inside a frequently called layer (like `EspnetRelPositionalEncoding` in a Transformer's forward pass) acts as a significant multithreading bottleneck because it forces synchronization even when the underlying cached tensor (like positional embeddings) doesn't need to be extended.
+**Action:** Always use the double-checked locking pattern (fast path `read().unwrap()`, fallback to `write().unwrap()` with a double check) for dynamically scaled cached tensors in models to eliminate lock contention during regular inference.
