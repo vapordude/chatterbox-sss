@@ -32,3 +32,9 @@ impl Upsample1D {
     pub fn new(_dim: usize, _use_conv_transpose: bool, _vb: VarBuilder) -> Result<Self> { Ok(Self) }
     pub fn forward(&self, _x: &Tensor) -> Result<Tensor> { Ok(_x.clone()) }
 }
+
+pub struct Decoder;
+impl Decoder {
+    pub fn new(_in_channels: usize, _out_channels: usize, _vb: VarBuilder) -> Result<Self> { Ok(Self) }
+    pub fn forward(&self, _x: &Tensor, _mask: &Tensor, _mu: &Tensor, _t: &Tensor, _spks: Option<&Tensor>, _cond: Option<&Tensor>) -> Result<Tensor> { Ok(_x.clone()) }
+}
