@@ -1,0 +1,4 @@
+## 2024-05-18 - [Fix Insecure Deserialization in PyTorch Load]
+**Vulnerability:** Found `torch.load` being used without `weights_only=True` in `src/chatterbox/vc.py`. This poses a critical insecure deserialization vulnerability since PyTorch's pickle-based format can execute arbitrary code upon loading a malicious payload.
+**Learning:** PyTorch defaults changed recently, but older code or specifically mapped code may still omit `weights_only=True` when loading `.pt` files. It's vital to systematically check all `torch.load` usages across the codebase, not just in obvious model loading paths.
+**Prevention:** Always enforce `weights_only=True` whenever using `torch.load` for `.pt` or `.bin` files, or preferably use `safetensors` which doesn't suffer from pickle vulnerabilities in the first place.
