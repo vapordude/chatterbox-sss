@@ -17,9 +17,9 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `multilingual_app.py`
 - [ ] `src/chatterbox/__init__.py`
 - [ ] `src/chatterbox/models/__init__.py`
-- [ ] `src/chatterbox/models/s3gen/__init__.py`
-- [ ] `src/chatterbox/models/s3gen/configs.py`
-- [ ] `src/chatterbox/models/s3gen/const.py`
+- [x] `src/chatterbox/models/s3gen/__init__.py`
+- [x] `src/chatterbox/models/s3gen/configs.py`
+- [x] `src/chatterbox/models/s3gen/const.py`
 - [x] `src/chatterbox/models/s3gen/decoder.py`
 - [x] `src/chatterbox/models/s3gen/f0_predictor.py`
 - [x] `src/chatterbox/models/s3gen/flow.py`
