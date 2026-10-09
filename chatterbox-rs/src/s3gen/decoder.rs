@@ -231,7 +231,7 @@ impl FinalBlockWrapper {
     pub fn forward(&self, x: &Tensor, mask: &Tensor) -> Result<Tensor> {
         match self {
             Self::Causal(b) => b.forward(x, mask),
-            Self::NonCausal(b) => b.forward(x),
+            Self::NonCausal(b) => b.forward(x, mask),
         }
     }
 }
@@ -297,7 +297,7 @@ impl ConditionalDecoder {
     ) -> Result<Self> {
         let time_embeddings = SinusoidalPosEmb::new(in_channels);
         let time_embed_dim = channels[0] * 4;
-        let time_mlp = TimestepEmbedding::new(in_channels, time_embed_dim, "silu", vb.pp("time_mlp"))?;
+        let time_mlp = TimestepEmbedding::new(in_channels, time_embed_dim, "silu", None, None, vb.pp("time_mlp"))?;
         
         let mut down_blocks = Vec::new();
         let mut mid_blocks = Vec::new();
@@ -378,7 +378,7 @@ impl ConditionalDecoder {
             }
             
             let upsample = if !is_last {
-                UpsampleWrapper::Upsample1D(Upsample1D::new(output_channel, true, vb.pp(&format!("up_blocks.{}.2", i)))?)
+                UpsampleWrapper::Upsample1D(Upsample1D::new(output_channel, true, false, None, vb.pp(&format!("up_blocks.{}.2", i)))?)
             } else if causal {
                 UpsampleWrapper::CausalConv1d(CausalConv1d::new(output_channel, output_channel, 3, 1, 1, true, vb.pp(&format!("up_blocks.{}.2", i)))?)
             } else {
@@ -393,7 +393,7 @@ impl ConditionalDecoder {
         let final_block = if causal {
             FinalBlockWrapper::Causal(CausalBlock1D::new(final_ch, final_ch, vb.pp("final_block"))?)
         } else {
-            FinalBlockWrapper::NonCausal(Block1D::new(final_ch, final_ch, vb.pp("final_block"))?)
+            FinalBlockWrapper::NonCausal(Block1D::new(final_ch, final_ch, 8, vb.pp("final_block"))?)
         };
         
         let config = Conv1dConfig { padding: 0, stride: 1, dilation: 1, groups: 1 };
@@ -410,7 +410,7 @@ impl ConditionalDecoder {
             in_channels,
             out_channels,
             causal,
-            time_embeddings,
+            time_embeddings: time_embeddings?,
             time_mlp,
             down_blocks,
             mid_blocks,
@@ -435,13 +435,13 @@ impl ConditionalDecoder {
         cond: Option<&Tensor>,
         r: Option<&Tensor>,
     ) -> Result<Tensor> {
-        let mut t_emb = self.time_embeddings.forward(t)?.to_dtype(t.dtype())?;
-        t_emb = self.time_mlp.forward(&t_emb)?;
+        let mut t_emb = self.time_embeddings.forward(t, 1000.0)?.to_dtype(t.dtype())?;
+        t_emb = self.time_mlp.forward(&t_emb, None)?;
 
         if self.meanflow {
             if let Some(r_t) = r {
-                let r_emb = self.time_embeddings.forward(r_t)?.to_dtype(t.dtype())?;
-                let r_emb = self.time_mlp.forward(&r_emb)?;
+                let r_emb = self.time_embeddings.forward(r_t, 1000.0)?.to_dtype(t.dtype())?;
+                let r_emb = self.time_mlp.forward(&r_emb, None)?;
                 let concat_embed = Tensor::cat(&[&t_emb, &r_emb], 1)?;
                 if let Some(mixer) = &self.time_embed_mixer {
                     t_emb = mixer.forward(&concat_embed)?;
