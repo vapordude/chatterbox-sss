@@ -77,6 +77,92 @@ impl Module for Snake {
     }
 }
 
+
+#[derive(Debug)]
+pub struct SnakeBeta {
+    proj: candle_nn::Linear,
+    alpha: Tensor,
+    beta: Tensor,
+    alpha_logscale: bool,
+    no_div_by_zero: f64,
+}
+
+impl SnakeBeta {
+    pub fn new(
+        in_features: usize,
+        out_features: usize,
+        alpha_val: f64,
+        alpha_logscale: bool,
+        vb: VarBuilder,
+    ) -> Result<Self> {
+        let proj = candle_nn::linear(in_features, out_features, vb.pp("proj"))?;
+
+        let alpha = if alpha_logscale {
+            vb.get_with_hints(
+                out_features,
+                "alpha",
+                candle_nn::Init::Const(0.0), // log scale alphas initialized to zeros
+            )?
+        } else {
+            vb.get_with_hints(
+                out_features,
+                "alpha",
+                candle_nn::Init::Const(alpha_val), // linear scale alphas initialized to alpha
+            )?
+        };
+
+        let beta = if alpha_logscale {
+            vb.get_with_hints(
+                out_features,
+                "beta",
+                candle_nn::Init::Const(0.0), // log scale betas initialized to zeros
+            )?
+        } else {
+            vb.get_with_hints(
+                out_features,
+                "beta",
+                candle_nn::Init::Const(alpha_val), // linear scale betas initialized to alpha
+            )?
+        };
+
+        Ok(Self {
+            proj,
+            alpha,
+            beta,
+            alpha_logscale,
+            no_div_by_zero: 1e-9,
+        })
+    }
+}
+
+impl Module for SnakeBeta {
+    fn forward(&self, x: &Tensor) -> Result<Tensor> {
+        // x shape could be [B, T, C] or similar. We project it.
+        let x = self.proj.forward(x)?;
+
+        // alpha, beta shape is [C]. Need to reshape them to broadcast with x.
+        // Python does elementwise multiplication. We need to broadcast alpha and beta to x's shape.
+        // Assuming x is [B, T, C], we can reshape alpha/beta to [1, 1, C] or let broadcast_mul handle it
+        // depending on the exact dimensions. Candle's broadcast_mul/add handle trailing dimensions usually.
+        // Since `Linear` produces [..., C], `alpha` and `beta` are `[C]`, so broadcasting just works.
+
+        let (alpha, beta) = if self.alpha_logscale {
+            (self.alpha.exp()?, self.beta.exp()?)
+        } else {
+            (self.alpha.clone(), self.beta.clone())
+        };
+
+        let x_alpha = x.broadcast_mul(&alpha)?;
+        let sin_x_alpha = x_alpha.sin()?;
+        let sin_sq = sin_x_alpha.sqr()?;
+
+        let denom = (beta + self.no_div_by_zero)?;
+        let term2 = sin_sq.broadcast_div(&denom)?;
+
+        x.broadcast_add(&term2)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -157,3 +243,28 @@ mod tests {
         Ok(())
     }
 }
+
+    #[test]
+    fn test_snakebeta_linear() -> Result<()> {
+        use candle_core::Device;
+        use candle_nn::VarMap;
+        let device = Device::Cpu;
+        let varmap = VarMap::new();
+        let vb = VarBuilder::from_varmap(&varmap, candle_core::DType::F32, &device);
+
+        let in_features = 2;
+        let out_features = 2;
+        let snake = SnakeBeta::new(in_features, out_features, 1.0, false, vb)?;
+
+        // Input shape [B, T, C] = [1, 3, 2]
+        let x = Tensor::new(&[[[0.1f32, 0.4], [0.2, 0.5], [0.3, 0.6]]], &device)?;
+
+        let y = snake.forward(&x)?;
+
+        let y_vec = y.flatten_all()?.to_vec1::<f32>()?;
+
+        // Since proj is initialized with zeroes (mostly, in tests or randomly), we cannot exact match.
+        // But we can check that it executes successfully without errors and outputs correct shape.
+        assert_eq!(y_vec.len(), 6);
+        Ok(())
+    }

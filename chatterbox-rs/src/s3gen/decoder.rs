@@ -480,7 +480,7 @@ impl ConditionalDecoder {
             let attn_mask_bias = mask_to_bias(&attn_mask, h.dtype())?;
             
             for tb in &block.transformer_blocks {
-                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb))?;
+                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb), false)?;
             }
             
             // rearrange "b t c -> b c t"
@@ -512,7 +512,7 @@ impl ConditionalDecoder {
             let attn_mask_bias = mask_to_bias(&attn_mask, h.dtype())?;
             
             for tb in &block.transformer_blocks {
-                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb))?;
+                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb), false)?;
             }
             h = h.transpose(1, 2)?.contiguous()?;
         }
@@ -537,7 +537,7 @@ impl ConditionalDecoder {
             let attn_mask_bias = mask_to_bias(&attn_mask, h.dtype())?;
             
             for tb in &block.transformer_blocks {
-                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb))?;
+                h = tb.forward(&h, Some(&attn_mask_bias), Some(&t_emb), false)?;
             }
             
             h = h.transpose(1, 2)?.contiguous()?;
