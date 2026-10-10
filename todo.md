@@ -28,7 +28,7 @@ Check against the python file for parity, then mark that file for the next agent
 - [ ] `src/chatterbox/models/s3gen/matcha/decoder.py`
 - [ ] `src/chatterbox/models/s3gen/matcha/flow_matching.py`
 - [ ] `src/chatterbox/models/s3gen/matcha/text_encoder.py`
-- [ ] `src/chatterbox/models/s3gen/matcha/transformer.py`
+- [x] `src/chatterbox/models/s3gen/matcha/transformer.py`
 - [ ] `src/chatterbox/models/s3gen/s3gen.py`
 - [ ] `src/chatterbox/models/s3gen/transformer/__init__.py`
 - [x] `src/chatterbox/models/s3gen/transformer/activation.py`
