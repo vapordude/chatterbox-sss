@@ -1,0 +1,1 @@
+In PyTorch autoregressive loops, hoisting static tensor creations (like torch.as_tensor) outside the generation loop prevents redundant memory allocations and CPU-to-device transfers on every step, serving as an effective micro-optimization.
