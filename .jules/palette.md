@@ -1,0 +1,3 @@
+## 2024-05-24 - Enforce Character Limits Using Native Gr.Textbox Parameters
+**Learning:** When building or modifying Gradio UIs (e.g., `gr.Textbox`), relying solely on textual labels (like "(max chars 300)") to convey character limits is insufficient for a good UX, as it lacks immediate frontend validation and visual feedback.
+**Action:** Always enforce character limits using native parameters like `max_length` in components such as `gr.Textbox`. This provides immediate frontend validation and visual character counts, significantly enhancing user experience and preventing confusing server-side errors or unexpected truncation.
