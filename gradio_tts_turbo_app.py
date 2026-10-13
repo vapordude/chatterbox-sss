@@ -120,7 +120,8 @@ with gr.Blocks(title="Chatterbox Turbo", css=CUSTOM_CSS) as demo:
         with gr.Column():
             text = gr.Textbox(
                 value="Oh, that's hilarious! [chuckle] Um anyway, we do have a new model in store. It's the SkyNet T-800 series and it's got basically everything. Including AI integration with ChatGPT and um all that jazz. Would you like me to get some prices for you?",
-                label="Text to synthesize (max chars 300)",
+                label="Text to synthesize",
+                max_length=300,
                 max_lines=5,
                 elem_id="main_textbox"
             )
