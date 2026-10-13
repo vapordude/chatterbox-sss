@@ -231,7 +231,7 @@ impl FinalBlockWrapper {
     pub fn forward(&self, x: &Tensor, mask: &Tensor) -> Result<Tensor> {
         match self {
             Self::Causal(b) => b.forward(x, mask),
-            Self::NonCausal(b) => b.forward(x),
+            Self::NonCausal(b) => b.forward(x, mask),
         }
     }
 }
@@ -295,7 +295,7 @@ impl ConditionalDecoder {
     #[allow(dead_code)]
         vb: VarBuilder,
     ) -> Result<Self> {
-        let time_embeddings = SinusoidalPosEmb::new(in_channels);
+        let time_embeddings = SinusoidalPosEmb::new(in_channels)?;
         let time_embed_dim = channels[0] * 4;
         let time_mlp = TimestepEmbedding::new(in_channels, time_embed_dim, "silu", vb.pp("time_mlp"))?;
         
@@ -393,7 +393,7 @@ impl ConditionalDecoder {
         let final_block = if causal {
             FinalBlockWrapper::Causal(CausalBlock1D::new(final_ch, final_ch, vb.pp("final_block"))?)
         } else {
-            FinalBlockWrapper::NonCausal(Block1D::new(final_ch, final_ch, vb.pp("final_block"))?)
+            FinalBlockWrapper::NonCausal(Block1D::new(final_ch, final_ch, 8, vb.pp("final_block"))?)
         };
         
         let config = Conv1dConfig { padding: 0, stride: 1, dilation: 1, groups: 1 };
@@ -435,12 +435,12 @@ impl ConditionalDecoder {
         cond: Option<&Tensor>,
         r: Option<&Tensor>,
     ) -> Result<Tensor> {
-        let mut t_emb = self.time_embeddings.forward(t)?.to_dtype(t.dtype())?;
+        let mut t_emb = self.time_embeddings.forward(t, 1000.0)?.to_dtype(t.dtype())?;
         t_emb = self.time_mlp.forward(&t_emb)?;
 
         if self.meanflow {
             if let Some(r_t) = r {
-                let r_emb = self.time_embeddings.forward(r_t)?.to_dtype(t.dtype())?;
+                let r_emb = self.time_embeddings.forward(r_t, 1000.0)?.to_dtype(t.dtype())?;
                 let r_emb = self.time_mlp.forward(&r_emb)?;
                 let concat_embed = Tensor::cat(&[&t_emb, &r_emb], 1)?;
                 if let Some(mixer) = &self.time_embed_mixer {
