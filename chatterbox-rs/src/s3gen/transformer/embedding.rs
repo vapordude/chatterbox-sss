@@ -125,10 +125,23 @@ impl EspnetRelPositionalEncoding {
     fn extend_pe(&self, x: &Tensor) -> Result<()> {
         let seq_len = x.dim(1)?;
         
+        // Fast path: acquire read lock first to prevent thread contention
+        {
+            let pe_read = self.pe.read().unwrap();
+            if let Some(pe) = &*pe_read {
+                if pe.dim(1)? >= seq_len * 2 - 1 {
+                    // Device matching could be added here
+                    return Ok(());
+                }
+            }
+        }
+
+        // Slow path: acquire write lock
         let mut pe_lock = self.pe.write().unwrap();
+
+        // Double check in case another thread extended it while we waited for the lock
         if let Some(pe) = &*pe_lock {
             if pe.dim(1)? >= seq_len * 2 - 1 {
-                // Device matching could be added here
                 return Ok(());
             }
         }
