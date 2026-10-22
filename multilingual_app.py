@@ -254,7 +254,7 @@ with gr.Blocks() as demo:
             initial_lang = "fr"
             text = gr.Textbox(
                 value=default_text_for_ui(initial_lang),
-                label="Text to synthesize (max chars 300)",
+                label="Text to synthesize",
                 max_lines=5,
                 max_length=300
             )
@@ -279,7 +279,7 @@ with gr.Blocks() as demo:
             )
             
             exaggeration = gr.Slider(
-                0.25, 2, step=.05, label="Exaggeration (Neutral = 0.5, extreme values can be unstable)", value=.5
+                0.25, 2, step=.05, label="Exaggeration", info="Neutral = 0.5, extreme values can be unstable", value=.5
             )
             cfg_weight = gr.Slider(
                 0.2, 1, step=.05, label="CFG/Pace", value=0.5

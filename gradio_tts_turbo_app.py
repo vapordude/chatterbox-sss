@@ -120,7 +120,7 @@ with gr.Blocks(title="Chatterbox Turbo", css=CUSTOM_CSS) as demo:
         with gr.Column():
             text = gr.Textbox(
                 value="Oh, that's hilarious! [chuckle] Um anyway, we do have a new model in store. It's the SkyNet T-800 series and it's got basically everything. Including AI integration with ChatGPT and um all that jazz. Would you like me to get some prices for you?",
-                label="Text to synthesize (max chars 300)",
+                label="Text to synthesize",
                 max_lines=5,
                 max_length=300,
                 elem_id="main_textbox"
@@ -158,8 +158,8 @@ with gr.Blocks(title="Chatterbox Turbo", css=CUSTOM_CSS) as demo:
                 top_p = gr.Slider(0.00, 1.00, step=0.01, label="Top P", value=0.95)
                 top_k = gr.Slider(0, 1000, step=10, label="Top K", value=1000)
                 repetition_penalty = gr.Slider(1.00, 2.00, step=0.05, label="Repetition Penalty", value=1.2)
-                min_p = gr.Slider(0.00, 1.00, step=0.01, label="Min P (Set to 0 to disable)", value=0.00)
-                norm_loudness = gr.Checkbox(value=True, label="Normalize Loudness (-27 LUFS)")
+                min_p = gr.Slider(0.00, 1.00, step=0.01, label="Min P", info="Set to 0 to disable", value=0.00)
+                norm_loudness = gr.Checkbox(value=True, label="Normalize Loudness", info="-27 LUFS")
 
     demo.load(fn=load_model, inputs=[], outputs=model_state)
 
