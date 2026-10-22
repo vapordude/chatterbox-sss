@@ -255,7 +255,8 @@ with gr.Blocks() as demo:
             text = gr.Textbox(
                 value=default_text_for_ui(initial_lang),
                 label="Text to synthesize (max chars 300)",
-                max_lines=5
+                max_lines=5,
+                max_length=300
             )
             
             language_id = gr.Dropdown(
