@@ -158,7 +158,7 @@ with gr.Blocks(title="Chatterbox Turbo", css=CUSTOM_CSS) as demo:
                 top_p = gr.Slider(0.00, 1.00, step=0.01, label="Top P", value=0.95)
                 top_k = gr.Slider(0, 1000, step=10, label="Top K", value=1000)
                 repetition_penalty = gr.Slider(1.00, 2.00, step=0.05, label="Repetition Penalty", value=1.2)
-                min_p = gr.Slider(0.00, 1.00, step=0.01, label="Min P (Set to 0 to disable)", value=0.00)
+                min_p = gr.Slider(0.00, 1.00, step=0.01, label="Min P", info="Set to 0 to disable", value=0.00)
                 norm_loudness = gr.Checkbox(value=True, label="Normalize Loudness (-27 LUFS)")
 
     demo.load(fn=load_model, inputs=[], outputs=model_state)
