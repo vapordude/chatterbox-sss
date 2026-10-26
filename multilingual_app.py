@@ -279,14 +279,14 @@ with gr.Blocks() as demo:
             )
             
             exaggeration = gr.Slider(
-                0.25, 2, step=.05, label="Exaggeration (Neutral = 0.5, extreme values can be unstable)", value=.5
+                0.25, 2, step=.05, label="Exaggeration", info="Neutral = 0.5, extreme values can be unstable", value=.5
             )
             cfg_weight = gr.Slider(
                 0.2, 1, step=.05, label="CFG/Pace", value=0.5
             )
 
             with gr.Accordion("More options", open=False):
-                seed_num = gr.Number(value=0, label="Random seed (0 for random)")
+                seed_num = gr.Number(value=0, label="Random seed", info="0 for random")
                 temp = gr.Slider(0.05, 5, step=.05, label="Temperature", value=.8)
 
             run_btn = gr.Button("Generate", variant="primary")

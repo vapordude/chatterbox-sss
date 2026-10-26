@@ -1,3 +1,3 @@
-## 2024-05-24 - Enforcing Gradio Character Limits Natively
-**Learning:** Relying solely on component labels (e.g., "max chars 300") for character limits fails to prevent users from over-typing and lacks immediate visual feedback.
-**Action:** Always use Gradio's native `max_length` parameter on `gr.Textbox` components to provide real-time character counts and strict frontend validation, improving usability and reducing backend errors.
+## 2024-10-26 - Move instructional text to info parameter for Gradio UI components
+**Learning:** Cluttering the primary `label` parameter with lengthy instructional text in Gradio makes the UI feel messy and is poor for accessibility. The native `info` parameter exists specifically to provide helper text without degrading the primary label's readability.
+**Action:** Always use the `info` parameter for instructional or explanatory helper text in Gradio UI components (e.g., sliders, numbers, checkboxes) to maintain clean, accessible labels.
