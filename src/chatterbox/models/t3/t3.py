@@ -335,13 +335,15 @@ class T3(nn.Module):
         past = output.past_key_values
 
         # ---- Generation Loop using kv_cache ----
+        cfg_tensor = None
         for i in tqdm(range(max_new_tokens), desc="Sampling", dynamic_ncols=True):
             logits_step = output.logits[:, -1, :]
             # CFG combine  → (1, V)
             cond   = logits_step[0:1, :]
             uncond = logits_step[1:2, :]
-            cfg = torch.as_tensor(cfg_weight, device=cond.device, dtype=cond.dtype)
-            logits = cond + cfg * (cond - uncond)
+            if cfg_tensor is None:
+                cfg_tensor = torch.as_tensor(cfg_weight, device=cond.device, dtype=cond.dtype)
+            logits = cond + cfg_tensor * (cond - uncond)
             
             # Apply repetition penalty
             ids_for_proc = generated_ids[:1, ...]   # batch = 1
