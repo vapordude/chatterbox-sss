@@ -25,6 +25,11 @@ class LearnedPositionEmbeddings(nn.Module):
         Returns:
             positional embeddings for given indices, shape (B, T, dim), ie (1, 1, dim) for int input
         """
+        if isinstance(idx, int):
+            # Performance optimization: Directly index embedding weights for scalar integers
+            # to avoid creating a new tensor and performing a host-to-device transfer on every step.
+            return self.emb.weight[idx:idx+1].unsqueeze(0)
+
         device = self.emb.weight.device
         idx = idx.to(device) if torch.is_tensor(idx) else torch.tensor(idx, device=device)
         idx = torch.atleast_2d(idx)
