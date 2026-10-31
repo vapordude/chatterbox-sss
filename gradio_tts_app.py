@@ -48,20 +48,21 @@ with gr.Blocks() as demo:
         with gr.Column():
             text = gr.Textbox(
                 value="Now let's make my mum's favourite. So three mars bars into the pan. Then we add the tuna and just stir for a bit, just let the chocolate and fish infuse. A sprinkle of olive oil and some tomato ketchup. Now smell that. Oh boy this is going to be incredible.",
-                label="Text to synthesize (max chars 300)",
+                label="Text to synthesize",
+                info="Max chars 300",
                 max_lines=5,
                 max_length=300
             )
             ref_wav = gr.Audio(sources=["upload", "microphone"], type="filepath", label="Reference Audio File", value=None)
-            exaggeration = gr.Slider(0.25, 2, step=.05, label="Exaggeration (Neutral = 0.5, extreme values can be unstable)", value=.5)
+            exaggeration = gr.Slider(0.25, 2, step=.05, label="Exaggeration", info="Neutral = 0.5, extreme values can be unstable", value=.5)
             cfg_weight = gr.Slider(0.0, 1, step=.05, label="CFG/Pace", value=0.5)
 
             with gr.Accordion("More options", open=False):
-                seed_num = gr.Number(value=0, label="Random seed (0 for random)")
-                temp = gr.Slider(0.05, 5, step=.05, label="temperature", value=.8)
-                min_p = gr.Slider(0.00, 1.00, step=0.01, label="min_p || Newer Sampler. Recommend 0.02 > 0.1. Handles Higher Temperatures better. 0.00 Disables", value=0.05)
-                top_p = gr.Slider(0.00, 1.00, step=0.01, label="top_p || Original Sampler. 1.0 Disables(recommended). Original 0.8", value=1.00)
-                repetition_penalty = gr.Slider(1.00, 2.00, step=0.1, label="repetition_penalty", value=1.2)
+                seed_num = gr.Number(value=0, label="Random seed", info="0 for random")
+                temp = gr.Slider(0.05, 5, step=.05, label="Temperature", value=.8)
+                min_p = gr.Slider(0.00, 1.00, step=0.01, label="Min P", info="Newer Sampler. Recommend 0.02 > 0.1. Handles Higher Temperatures better. 0.00 Disables", value=0.05)
+                top_p = gr.Slider(0.00, 1.00, step=0.01, label="Top P", info="Original Sampler. 1.0 Disables (recommended). Original 0.8", value=1.00)
+                repetition_penalty = gr.Slider(1.00, 2.00, step=0.1, label="Repetition Penalty", value=1.2)
 
             run_btn = gr.Button("Generate", variant="primary")
 
