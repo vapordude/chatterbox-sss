@@ -5,6 +5,7 @@ pub mod xvector;
 pub mod f0_predictor;
 pub mod flow_matching;
 pub mod flow;
+pub mod constants;
 
 use candle_core::{Result as CandleResult, Tensor};
 use candle_nn::VarBuilder;
